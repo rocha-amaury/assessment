@@ -25,37 +25,40 @@ public class ClienteController {
     ClienteService clienteService;
     @Autowired
     HttpUtil httpUtil;
-//    @GetMapping
-//    public ResponseEntity getAll(@RequestParam(required = false, defaultValue = "100") Integer size,
-//                                 @RequestParam(required = false, defaultValue = "") String sort,
-//                                 @RequestParam(required = false, defaultValue = "") String order,
-//                                 @RequestParam(required = false, defaultValue = "1") int start,
-//                                 @RequestParam(required = false, defaultValue = "10") int end,
-//                                 @RequestParam(required = false, defaultValue = "1") int page
-//
-//
-//    ){
-//        List<Cliente> all = clienteService.getByPageAndSize(page,size);
-//        int x = 1;
-//
-//        int totalDePaginas = 3;
-//        Info info = new Info(200, 4, 1);
-//        ClientePayload clientePayload = new ClientePayload(all, info);
-//        HttpHeaders httpHeaders = httpUtil.getHttpHeaders(size, page);
-//        return  ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(all);
-//
-//
-//        //return clienteService.getAll(size,page,sort,order);
-//    }
+
+    @GetMapping("/paginado")
+    public ResponseEntity getAllByPageAndSize(@RequestParam(required = false, defaultValue = "100") Integer size,
+                                 @RequestParam(required = false, defaultValue = "1") int page) {
+        logger.info("Acessando getAllByPageAndSize(size: " + size + ", page: " + page + ")");
+        int totalPaginas = clienteService.getTotalDePaginas(size);
+
+        if (page > totalPaginas) {
+            ResponsePayload errorPayload = new ResponsePayload("Página solicitada é maior que o total de páginas disponíveis.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorPayload);
+        }
+
+        List<Cliente> all = clienteService.getByPageAndSize(page, size);
+        Info info = new Info(all.size(), totalPaginas, page);
+        ClientePayload clientePayload = new ClientePayload(all, info);
+        HttpHeaders httpHeaders = httpUtil.getHttpHeaders(size, page);
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(clientePayload);
+    }
 
     @GetMapping
-    public List<Cliente> getAll(){
-        logger.info("GET ALL CLIENTES");
-        return clienteService.getAll();
+    public ResponseEntity getAll() {
+        logger.info("Acessando getAll()");
+        List<Cliente> all = clienteService.getAll();
+        int totalPaginas = clienteService.getTotalDePaginas(all.size());
+
+        Info info = new Info(all.size(), 1, 1);
+        ClientePayload clientePayload = new ClientePayload(all, info);
+        HttpHeaders httpHeaders = httpUtil.getHttpHeaders(all.size(), 1);
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(clientePayload);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){
+        logger.info("Acessando getById(id: " + id + ")");
         try{
             Cliente cliente = clienteService.getById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Cliente Inexistente"));
@@ -67,6 +70,7 @@ public class ClienteController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity deleteById(@PathVariable Long id){
+        logger.info("Acessando deleteById(id: " + id + ")");
         try {
             Cliente removed = clienteService.deleteById(id);
             return ResponseEntity.ok(removed);
@@ -75,19 +79,31 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsePayload);
         }
     }
+    @PutMapping("/{id}")
+    public ResponseEntity updateCliente(@PathVariable Long id, @RequestBody  Cliente cliente){
+
+        try{
+            Cliente clienteAtual = clienteService.getById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente Inexistente"));
+            Cliente returned = clienteService.update(id,cliente);
+            logger.info("Acessando updateCliente(id: " + id + ", novo cliente: " + returned );
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("cliente-id",String.valueOf(clienteAtual.getId()));
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED).headers(httpHeaders).body(returned);
+
+        }catch (ResourceNotFoundException ex){
+            ResponsePayload responsePayload = new ResponsePayload(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsePayload);
+        }
+    }
+
     @PostMapping
-    public ResponseEntity create(@RequestBody Cliente cliente){
+    public ResponseEntity createCliente(@RequestBody Cliente cliente){
         HttpHeaders httpHeaders = new HttpHeaders();
         Cliente returned = clienteService.create(cliente);
-
+        logger.info("Acessando createCliente(novo cliente: " + returned );
         httpHeaders.set("cliente-id",String.valueOf(returned.getId()));
-        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).build();
+        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(returned);
     }
-
-    @PutMapping("/{id}")
-    public void update(@PathVariable int id, @RequestBody  Cliente cliente){
-        logger.info("UPDATE CLIENTE: " + id + " novo cliente: " +cliente );
-        clienteService.update(id,cliente);
-    }
-
 }

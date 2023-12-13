@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import br.com.infnet.assessment.exception.ResourceNotFoundException;
 import br.com.infnet.assessment.model.ExchangeRate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,12 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ExchangeRateUtil {
+    Logger logger = LoggerFactory.getLogger(ExchangeRateUtil.class);
     private final String exchangeRateApiUrl = "https://v6.exchangerate-api.com/v6/";
     private final String exchangeRateApiKey= "4a1c42c39c0ff9f211e6cc07";
 
     public ExchangeRate generateExchangeRate() {
         String fileName = "exchangeRateResponse.txt";
         Path filePath = Paths.get("resources", fileName);
+
         if (!Files.exists(filePath)) {
             salvaExchangeRateJson();
         }
@@ -46,6 +50,7 @@ public class ExchangeRateUtil {
             }
             ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
             ExchangeRate exchangeRate = mapper.readValue(response.body(), ExchangeRate.class);
+            logger.info("Status Code: {}", response.statusCode());
             return exchangeRate;
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -63,11 +68,16 @@ public class ExchangeRateUtil {
     }
 
     public void salvaExchangeRateJson(){
-        ExchangeRate exchangeRate = getLatestRatesByCode("BRL");
-        String fileName = "exchangeRateResponse.txt";
-        Path path = Path.of("resources/exchangeRateResponse.txt");
-        String jsonResponse = convertExchangeRateToJson(exchangeRate);
-        JsonFileUtil.saveJsonToFile(jsonResponse, fileName);
+        try {
+            ExchangeRate exchangeRate = getLatestRatesByCode("BRL");
+            String fileName = "exchangeRateResponse.txt";
+            Path path = Path.of("resources/exchangeRateResponse.txt");
+            String jsonResponse = convertExchangeRateToJson(exchangeRate);
+            JsonFileUtil.saveJsonToFile(jsonResponse, fileName);
+        } catch (RuntimeException e) {
+            logger.error("Erro ao salvar taxas de câmbio em arquivo JSON.", e);
+            throw e;
+        }
     }
 
     public Map<String, Object> getSupportedCodes() {

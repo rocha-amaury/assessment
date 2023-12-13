@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data@AllArgsConstructor
 public class Info {
-    private int totalRegistro;
+    private int totalRegistros;
     private int totalPaginas;
     private int paginaCorrente;
 }
