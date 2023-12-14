@@ -37,7 +37,7 @@ public class ExchangeRateUtil {
     }
 
     public ExchangeRate getLatestRatesByCode(String code) {
-        System.out.println("getLatestRatesByCode: " + code);
+        logger.info("getLatestRatesByCode: " + code);
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()

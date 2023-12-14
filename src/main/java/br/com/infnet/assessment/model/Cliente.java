@@ -12,7 +12,7 @@ public class Cliente {
     private Long id;
     private String nome;
     private String cpf;
-    private String moedaLocal = "BRL";
+    private final String moedaLocal = "BRL";
     private double saldoTotalMoedaLocal;
     private Map<String, Double> saldos;
 }
