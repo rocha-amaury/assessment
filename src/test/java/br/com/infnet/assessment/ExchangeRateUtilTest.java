@@ -12,7 +12,7 @@ class ExchangeRateUtilTest {
 
     @Test
     @DisplayName("GenerateExchangeRate - Deve retornar objeto ExchangeRate")
-    void testGenerateExchangeRate() {
+    void testaGenerateExchangeRate() {
         ExchangeRateUtil exchangeRateUtil = new ExchangeRateUtil();
         ExchangeRate exchangeRate = exchangeRateUtil.generateExchangeRate();
         assertNotNull(exchangeRate);
@@ -20,7 +20,7 @@ class ExchangeRateUtilTest {
 
     @Test
     @DisplayName("GetLatestRatesByCode - Deve testar seleção de de cotação válida")
-    void testGetLatestRatesByCode() {
+    void testaGetLatestRatesByCode() {
         ExchangeRateUtil exchangeRateUtil = new ExchangeRateUtil();
         String code = "BRL";
         ExchangeRate exchangeRate = exchangeRateUtil.getLatestRatesByCode(code);
@@ -29,22 +29,22 @@ class ExchangeRateUtilTest {
 
     @Test
     @DisplayName("GetLatestRatesByCode - Deve testar seleção de de cotação inexistente")
-    void testGetLatestRatesByInvalidCode() {
+    void testaGetLatestRatesByInvalidCode() {
         ExchangeRateUtil exchangeRateUtil = new ExchangeRateUtil();
-        String invalidCode = "ABC";
-        assertThrows(ResourceNotFoundException.class, () -> exchangeRateUtil.getLatestRatesByCode(invalidCode));
+        String code = "ABC";
+        assertThrows(ResourceNotFoundException.class, () -> exchangeRateUtil.getLatestRatesByCode(code));
     }
 
     @Test
     @DisplayName("Teste do método salvaExchangeRateJson")
-    void testSalvaExchangeRateJson() {
+    void testaSalvaExchangeRateJson() {
         ExchangeRateUtil exchangeRateUtil = new ExchangeRateUtil();
         assertDoesNotThrow(exchangeRateUtil::salvaExchangeRateJson);
     }
 
     @Test
     @DisplayName("Teste do método GetSupportedCodes")
-    void testGetSupportedCodes() {
+    void testaGetSupportedCodes() {
         ExchangeRateUtil exchangeRateUtil = new ExchangeRateUtil();
         assertDoesNotThrow(exchangeRateUtil::getSupportedCodes);
     }

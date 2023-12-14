@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class ClienteService {
     Logger logger = LoggerFactory.getLogger(ClienteService.class);
-    private final AtomicLong ID_GENERATOR = new AtomicLong(1);
     static ExchangeRateUtil ExchangeRateUtil = new ExchangeRateUtil();
     //    private static ExchangeRate exchangeRate = exchangeRateUtil.getLatestRatesByCode("BRL");
     private static ExchangeRate exchangeRate = ExchangeRateUtil.generateExchangeRate();

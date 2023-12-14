@@ -29,58 +29,58 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Get - Deve retornar todos os clientes")
-    void getAll() {
+    void testaGetAll() {
         List<Cliente> clientes = clienteService.getAll();
         assertThat(clientes).hasSize(100);
     }
 
     @Test
     @DisplayName("Get - Deve testar seleção de Id existente")
-    void getById() {
-        long existingId = 1;
-        Optional<Cliente> clienteOptional = clienteService.getById(existingId);
+    void testaGetById() {
+        long id = 1;
+        Optional<Cliente> clienteOptional = clienteService.getById(id);
         assertTrue(clienteOptional.isPresent());
-        assertEquals(existingId, clienteOptional.get().getId());
+        assertEquals(id, clienteOptional.get().getId());
     }
 
     @Test
     @DisplayName("Get - Deve testar seleção de Id inexistente")
-    void getByIdInexistente() {
-        long nonExistingId = 1000;
-        Optional<Cliente> clienteOptional = clienteService.getById(nonExistingId);
+    void testaGetByIdInexistente() {
+        long id = 1000;
+        Optional<Cliente> clienteOptional = clienteService.getById(id);
         assertTrue(clienteOptional.isEmpty());
     }
 
     @Test
     @DisplayName("Delete - Deve testar deleção de Id existente")
-    void deleteById_ExistingId_ShouldRemoveClienteAndReturnIt() {
-        long existingId = 1;
-        Cliente removed = clienteService.deleteById(existingId);
+    void testaDeleteById() {
+        long id = 1;
+        Cliente removed = clienteService.deleteById(id);
         assertThat(clienteService.getAll()).doesNotContain(removed);
     }
 
     @Test
     @DisplayName("Delete - Deve testar erro ResourceNotFoundException")
-    void deleteByIdThrowResourceNotFoundException() {
-        long nonExistingId = 1000;
-        assertThrows(ResourceNotFoundException.class, () -> clienteService.deleteById(nonExistingId));
+    void testaDeleteByIdThrowResourceNotFoundException() {
+        long id = 1000;
+        assertThrows(ResourceNotFoundException.class, () -> clienteService.deleteById(id));
     }
 
     @Test
     @DisplayName("Update - Deve testar atualização de Id existente")
-    void update() {
-        long existingId = 1;
-        Cliente clienteToUpdate = clienteService.getById(existingId).orElseThrow();
+    void testaUpdate() {
+        long id = 1;
+        Cliente clienteToUpdate = clienteService.getById(id).orElseThrow();
         clienteToUpdate.setNome("UpdatedName");
-        Cliente updatedCliente = clienteService.update(existingId, clienteToUpdate);
-        assertEquals("UpdatedName", updatedCliente.getNome());
+        Cliente clienteUpdated = clienteService.update(id, clienteToUpdate);
+        assertEquals("UpdatedName", clienteUpdated.getNome());
     }
 
     @Test
     @DisplayName("Update - Deve testar erro ResourceNotFoundException")
-    void updateThrowResourceNotFoundException() {
-        long nonExistingId = 1000;
-        Cliente clienteToUpdate = new Cliente();
-        assertThrows(ResourceNotFoundException.class, () -> clienteService.update(nonExistingId, clienteToUpdate));
+    void testaUpdateThrowResourceNotFoundException() {
+        long id = 1000;
+        Cliente clienteUpdate = new Cliente();
+        assertThrows(ResourceNotFoundException.class, () -> clienteService.update(id, clienteUpdate));
     }
 }

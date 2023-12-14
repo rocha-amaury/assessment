@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HttpUtil {
+    private final ClienteService clienteService;
+
     @Autowired
-    ClienteService clienteService;
+    public HttpUtil(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
     public HttpHeaders getHttpHeaders(Integer size, int page) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("total-size", String.valueOf(clienteService.count()));

@@ -21,10 +21,13 @@ import java.util.List;
 @RequestMapping("/cliente")
 public class ClienteController {
     Logger logger = LoggerFactory.getLogger(ClienteController.class);
+    private final ClienteService clienteService;
+    private final HttpUtil httpUtil;
     @Autowired
-    ClienteService clienteService;
-    @Autowired
-    HttpUtil httpUtil;
+    public ClienteController(ClienteService clienteService, HttpUtil httpUtil) {
+        this.clienteService = clienteService;
+        this.httpUtil = httpUtil;
+    }
 
     @GetMapping("/paginado")
     public ResponseEntity getAllByPageAndSize(@RequestParam(required = false, defaultValue = "100") Integer size,
