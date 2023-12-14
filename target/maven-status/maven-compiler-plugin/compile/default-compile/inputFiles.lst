@@ -1,0 +1,12 @@
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\service\ClienteService.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\model\Cliente.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\model\payload\ResponsePayload.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\util\ExchangeRateUtil.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\util\JsonFileUtil.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\exception\ResourceNotFoundException.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\AssessmentApplication.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\model\ExchangeRate.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\model\payload\Info.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\util\HttpUtil.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\controllers\ClienteController.java
+C:\Java\assessment\src\main\java\br\com\infnet\assessment\model\payload\ClientePayload.java

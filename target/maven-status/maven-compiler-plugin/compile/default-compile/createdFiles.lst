@@ -1,0 +1,13 @@
+br\com\infnet\assessment\model\payload\Info.class
+br\com\infnet\assessment\AssessmentApplication.class
+br\com\infnet\assessment\service\ClienteService.class
+br\com\infnet\assessment\exception\ResourceNotFoundException.class
+br\com\infnet\assessment\model\payload\ClientePayload.class
+br\com\infnet\assessment\controllers\ClienteController.class
+br\com\infnet\assessment\model\Cliente$ClienteBuilder.class
+br\com\infnet\assessment\model\Cliente.class
+br\com\infnet\assessment\model\payload\ResponsePayload.class
+br\com\infnet\assessment\util\JsonFileUtil.class
+br\com\infnet\assessment\util\HttpUtil.class
+br\com\infnet\assessment\model\ExchangeRate.class
+br\com\infnet\assessment\util\ExchangeRateUtil.class
