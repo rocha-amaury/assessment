@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+
 @Service
 public class ClienteService {
     Logger logger = LoggerFactory.getLogger(ClienteService.class);
-    static ExchangeRateUtil ExchangeRateUtil = new ExchangeRateUtil();
-    //    private static ExchangeRate exchangeRate = exchangeRateUtil.getLatestRatesByCode("BRL");
-    private static ExchangeRate exchangeRate = ExchangeRateUtil.generateExchangeRate();
+    static ExchangeRateUtil exchangeRateUtil = new ExchangeRateUtil();
+        private static ExchangeRate exchangeRate = exchangeRateUtil.getLatestRatesByCode("BRL");
+//    private static ExchangeRate exchangeRate = exchangeRateUtil.generateExchangeRate();
     private Map<Long, Cliente> clientes = generateClientes(100);
     private Long lastId=100L;
 

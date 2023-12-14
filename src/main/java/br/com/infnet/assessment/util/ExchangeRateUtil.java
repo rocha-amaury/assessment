@@ -23,7 +23,8 @@ import java.util.Map;
 public class ExchangeRateUtil {
     Logger logger = LoggerFactory.getLogger(ExchangeRateUtil.class);
     private final String exchangeRateApiUrl = "https://v6.exchangerate-api.com/v6/";
-    private final String exchangeRateApiKey= "4a1c42c39c0ff9f211e6cc07";
+//    private final String exchangeRateApiKey= "4a1c42c39c0ff9f211e6cc07";
+    private final String exchangeRateApiKey= "acf8343f82f48089be168f0c";
 
     public ExchangeRate generateExchangeRate() {
         String fileName = "exchangeRateResponse.txt";
@@ -50,7 +51,7 @@ public class ExchangeRateUtil {
             }
             ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
             ExchangeRate exchangeRate = mapper.readValue(response.body(), ExchangeRate.class);
-            logger.info("Status Code: {}", response.statusCode());
+            logger.info("Request API: {} -- Status Code: {}",exchangeRateApiUrl + exchangeRateApiKey + "/latest/" + code, response.statusCode());
             return exchangeRate;
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);

@@ -83,4 +83,5 @@ class ClienteServiceTest {
         Cliente clienteUpdate = new Cliente();
         assertThrows(ResourceNotFoundException.class, () -> clienteService.update(id, clienteUpdate));
     }
+
 }
